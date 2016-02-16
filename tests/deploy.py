@@ -102,3 +102,6 @@ if __name__ == '__main__':
     logging.getLogger().setLevel(logging.DEBUG)
     unit = juju_deploy('juju-gui')
     print(json.dumps(unit, indent=2))
+    print("User: admin")
+    password = juju('api-info',  *'--password password'.split())
+    print("Password: " + password)

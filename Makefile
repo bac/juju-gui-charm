@@ -16,9 +16,13 @@
 
 JUJUTEST = yes | juju-test --timeout=60m -v --upload-tools -e "$(JUJU_ENV)"
 VENV = tests/.venv
+
 # Keep SYSDEPS in sync with tests/tests.yaml.
 SYSDEPS = build-essential bzr charm-tools firefox libapt-pkg-dev \
 	libpython-dev python-virtualenv rsync xvfb
+
+DOWNLOAD_CACHE="tests/download-cache"
+DEPLOY_REQS=deploy-requirements.pip
 
 .PHONY: all
 all: setup
@@ -84,8 +88,12 @@ clean: clean-tests
 	rm -rf $(VENV)
 	$(MAKE) -C src clean
 
+$(VENV): $(DEPLOY_REQS)
+	virtualenv $(VENV)
+	$(VENV)/bin/pip install -r $(DEPLOY_REQS) --find-links releases --find-links deps --find-links $(DOWNLOAD_CACHE)
+
 .PHONY: deploy
-deploy: setup
+deploy: $(VENV)
 	$(VENV)/bin/python tests/deploy.py
 
 .PHONY: releases
