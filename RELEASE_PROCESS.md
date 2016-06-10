@@ -45,9 +45,13 @@ Ensure the newly packaged charm deploys and behaves. Ensure you can create a
 new environment.
 
 ### Juju 1.25 ###
-     export JUJU_DEV_FEATURE_FLAGS=jes
+     # We do not support JES for juju 1.
+     unset JUJU_DEV_FEATURE_FLAGS
+     make clean-test
      juju bootstrap
-     make deploy
+     # Ensure the charm under test is in or symlinked to $JUJU_REPOSITORY/trusty
+     juju deploy --repository=$JUJU_REPOSITORY local:trusty/juju-gui
+     juju expose juju-gui
 
 ### Juju 2 ###
      juju bootstrap <controller> <cloud> --upload-tools
@@ -107,7 +111,7 @@ Our betas are development versions of the charm and are published to the
 
 Before uploading, check to see the currently available versions:
 
-    charm show cs:~juju-gui-charmers/juju-gui id perm published
+    charm show --channel development cs:~juju-gui-charmers/juju-gui id perm published
 
 Next, to upload and publish the charm, go to the charm source directory and do:
 
@@ -157,9 +161,11 @@ Finally, check the information to ensure it changed:
 
 ## Tagging the charm code ##
 
-The charm should be tagged, ideallly with a number based on the release
+The charm should be tagged, ideally with a number based on the release
 version of the Juju GUI. It should then be pushed back to github.
 
+    # Commit your changes.
+    git commit -m "Release <semver>."
     git tag <semver>
     git push --tags origin master
 

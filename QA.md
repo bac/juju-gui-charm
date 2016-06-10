@@ -35,16 +35,17 @@ soon.
     * No access to admin environment
     * Cannot create new model
   ```
-  export JUJU_DEV_FEATURE_FLAGS=jes
+  make clean-tests
   juju bootstrap
-  make deploy
+  # Ensure the charm under test is in or symlinked to $JUJU_REPOSITORY/trusty
+  juju deploy --repository=$JUJU_REPOSITORY local:trusty/juju-gui
+  juju expose juju-gui
   ```
 
-* Deployed via the charm using Juju v2.0 / 1.26alpha
+* Deployed via the charm using Juju v2.0
 
   Ability to create new models
   ```
-  export JUJU_DEV_FEATURE_FLAGS=jes
   juju bootstrap
   make deploy
   ```
@@ -61,7 +62,7 @@ soon.
     * Bootstrap an empty environment to an external provider, e.g. ec2
       * `juju bootstrap -e ec2`
     * Deploy the GUI charm locally:
-      * `juju bootstrap -e local && make deploy`
+      * `juju bootstrap lxd lxd && make deploy`
     * ?? Deploy JEM somewhere?  Hook them up?
 
 * Via the horizon-juju-charm (HJC)
