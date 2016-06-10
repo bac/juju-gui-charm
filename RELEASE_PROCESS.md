@@ -57,6 +57,23 @@ new environment.
      juju bootstrap <controller> <cloud> --upload-tools
      make deploy
 
+## Commit Commit your changes. ##
+
+The charm will be versioned with a number based on the release
+version of the Juju GUI. Commit your changes with an appropriate message
+indicating the new version.  This needs to be done before pushing to the
+charmstore.
+
+    git commit -m "Release <semver>."
+
+## Tagging the charm code ##
+
+The charm should now be tagged.
+
+    git tag <semver>
+    git push --tags origin master
+
+
 ## Get the charm publishing tools ##
 
 You'll need the `charm` package from the juju/devel PPA:
@@ -158,16 +175,6 @@ done by manually running the charm command:
 Finally, check the information to ensure it changed:
 
     charm show cs:~juju-gui-charmers/juju-gui id perm published
-
-## Tagging the charm code ##
-
-The charm should be tagged, ideally with a number based on the release
-version of the Juju GUI. It should then be pushed back to github.
-
-    # Commit your changes.
-    git commit -m "Release <semver>."
-    git tag <semver>
-    git push --tags origin master
 
 ## Releasing to Launchpad for production ##
 
